@@ -6,6 +6,7 @@ import drizzleConfig from './config/drizzle-config';
 import menuItems from './config/menu-config';
 import TopBar from './TopBar';
 import NavigationBar from './NavigationBar';
+//import ContractInjector from './ContractInjector';
 
 class App extends Component {
 	render() {

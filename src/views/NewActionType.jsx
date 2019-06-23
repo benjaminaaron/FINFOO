@@ -18,6 +18,8 @@ const NewActionType = () => (
 			<ContractData
 				contract="Fin4Main"
 				method="getChildren"
+				title="All Available Action Types"
+				header={["Name", "Symbol"]}
 			/>
 		</LoadingContainer>
 	</Container>

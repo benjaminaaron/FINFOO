@@ -10,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import StringRetriever from './StringRetriever';
 
 class ContractData extends Component {
 	constructor(props, context) {
@@ -46,6 +47,7 @@ class ContractData extends Component {
 	}
 
 	render() {
+
 		// Contract is not yet intialized.
 		if (!this.props.contracts[this.props.contract].initialized) {
 			return <span>Initializing...</span>;
@@ -59,16 +61,6 @@ class ContractData extends Component {
 			)
 		) {
 			return <span>Fetching...</span>;
-		}
-
-		// Show a loading spinner for future updates.
-		var pendingSpinner = this.props.contracts[this.props.contract].synced
-			? ''
-			: ' 🔄';
-
-		// Optionally hide loading spinner (EX: ERC20 token symbol).
-		if (this.props.hideIndicator) {
-			pendingSpinner = '';
 		}
 
 		var displayData = this.props.contracts[this.props.contract][
@@ -92,16 +84,14 @@ class ContractData extends Component {
 
 		// If return value is an array
 		if (Array.isArray(displayData)) {
-			const displayListItems = displayData.map((datum, index) => {
-				return (
-					<li key={index}>
-						{`${datum}`}
-						{pendingSpinner}
-					</li>
-				);
-			});
+			if (displayData.length === 0) {
+				return (<></>)
+			}
 
-			return <ul>{displayListItems}</ul>;
+			displayData = {
+				0: displayData.map((datum, index) => <StringRetriever key={index} tokenAdr={datum} attribute={'name'} />),
+				1: displayData.map((datum, index) => <StringRetriever key={index} tokenAdr={datum} attribute={'symbol'} />)
+			};
 		}
 
 		// If retun value is an object of type 
@@ -131,6 +121,7 @@ class ContractData extends Component {
 									{Object.values(displayData)[0].map((row, r) => {
 										return <TableRow key={row}>{
 											Object.values(displayData).map(column => {
+												console.log(column[r])
 												return <TableCell key={`${row}-${column}`}>{column[r].toString()}</TableCell>
 											})
 										}</TableRow>
